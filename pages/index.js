@@ -2,8 +2,6 @@ import Head from 'next/head';
 import { useAuth } from '@/lib/auth';
 import { Button, Code, Flex, Heading, Link, Text } from '@chakra-ui/react';
 import { Icon } from '@chakra-ui/react';
-import EmptyState from '@/components/EmptyState';
-import { useRef } from 'react';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import { FcGoogle } from 'react-icons/Fc';
 import { MdDashboard } from 'react-icons/Md';
@@ -102,3 +100,4 @@ export default function Home() {
     </Flex>
   );
 }
+
