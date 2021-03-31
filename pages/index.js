@@ -1,63 +1,103 @@
-import Head from "next/head";
-import styles from "../styles/Home.module.css";
+import Head from 'next/head';
+import { useAuth } from '@/lib/auth';
+import { Button, Code, Flex, Heading, Link, Text } from '@chakra-ui/react';
+import { Icon } from '@chakra-ui/react';
+import GitHubIcon from '@material-ui/icons/GitHub';
+import { FcGoogle } from 'react-icons/Fc';
+import { MdDashboard } from 'react-icons/Md';
 
 export default function Home() {
+  const auth = useAuth();
+
   return (
-    <div className={styles.container}>
+    <Flex
+      as="main"
+      direction="column"
+      align="center"
+      justify="center"
+      h="100vh"
+    >
       <Head>
-        <title>Create Next App</title>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+          if (document.cookie && document.cookie.includes('fast-feedback-auth')){
+            window.location.href = "/dashboard"
+          }
+          `
+          }}
+        />
+        <title>Fast Feedback</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>Fast Feedback DevPet</h1>
-
-        <p className={styles.description}>
-          Get started by editing{" "}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+      <Icon viewBox="0 0 46 32" color="black" boxSize="64px">
+        <path
+          fill="currentColor"
+          d="M19.557.113C11.34.32 9.117 8.757 9.03 12.95c1.643-2.67 4.62-3.08 6.931-3.08 2.825.085 10.27.205 17.458 0C40.61 9.663 44.802 3.28 46 .112c-5.391-.085-18.228-.205-26.443 0zM14.422 14.234C3.332 14.234-.468 24.76.045 31.948c3.594-6.418 7.617-7.53 9.243-7.445h6.675c5.956 0 11.039-6.846 12.836-10.27H14.422z"
+        />
+      </Icon>
+      <Text mb={4} fontSize="lg" maxWidth="60%" p={4}>
+        <Text as="span" fontWeight="bold" display="inline">
+          Fast Feedback
+        </Text>
+        {' is being built as part of '}
+        <Link
+          href="https://react2025.com"
+          isExternal
+          textDecoration="underline"
         >
-          Powered by{" "}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
-    </div>
+          React 2025
+        </Link>
+        {`. It's the easiest way to add comments or reviews to your static site. It's still a work-in-progress, but you can try out by logging in.`}
+      </Text>
+      {auth.user ? (
+        <Button
+          as="a"
+          href="/dashboard"
+          backgroundColor="white"
+          color="gray.900"
+          variant="outline"
+          fontWeight="medium"
+          leftIcon={<MdDashboard />}
+          mt={4}
+          size="lg"
+          _hover={{ bg: 'gray.100' }}
+          _active={{ bg: 'gray.100', transform: 'scale(0.95)' }}
+        >
+          View Dashboard
+        </Button>
+      ) : (
+        <>
+          <Button
+            leftIcon={<GitHubIcon />}
+            backgroundColor="gray.900"
+            color="white"
+            fontWeight="medium"
+            mt={4}
+            size="lg"
+            _hover={{ bg: 'gray.700' }}
+            _active={{ bg: 'gray.800', transform: 'scale(0.95)' }}
+            onClick={() => auth.signinWithGitHub()}
+          >
+            Sign in with GitHub
+          </Button>
+          <Button
+            onClick={() => auth.signinWithGoogle()}
+            backgroundColor="white"
+            color="gray.900"
+            variant="outline"
+            fontWeight="medium"
+            leftIcon={<FcGoogle />}
+            mt={4}
+            size="lg"
+            _hover={{ bg: 'gray.100' }}
+            _active={{ bg: 'gray.100', transform: 'scale(0.95)' }}
+          >
+            Sign In with Google
+          </Button>
+        </>
+      )}
+    </Flex>
   );
 }
+
